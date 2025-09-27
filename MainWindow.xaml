@@ -1,0 +1,73 @@
+﻿<Window x:Class="W2CharacterEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:W2CharacterEditor"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
+            <MenuItem Header="File" VerticalAlignment="Center">
+                <MenuItem Header="Quit" Name="MenuQuit" Click="MenuQuit_Click" />
+            </MenuItem>
+            <MenuItem Header="Edit" VerticalAlignment="Center">
+                <MenuItem Header="Load" Name="MenuLoad" Click="MenuLoad_Click" />
+                <MenuItem Header="Save" Name="MenuSave" Click="MenuSave_Click" />
+            </MenuItem>
+            <MenuItem Header="Database" VerticalAlignment="Center">
+                <MenuItem Header="Download From MongoDB" Name="MenuDownLoad" Click="MenuMongoLoad_Click" />
+                <MenuItem Header="Upload to MongoDB" Name="MenuUpload" Click="MenuMongoSave_Click" />
+            </MenuItem>
+            <MenuItem Header="Help" VerticalAlignment="Center">
+                <MenuItem Header="About" Name="MenuAbout" />
+            </MenuItem>
+        </Menu>
+        <TabControl>
+            <TabItem Header="Character Editor">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Load" Name="MenuCLoad" Click="MenuCLoad_Click" />
+                            <MenuItem Header="Save" Name="MenuCSave" Click="MenuCSave_Click" />
+                            <MenuItem Header="MongoDB Load" Name="MenuCMLoad" Click="MenuMongoLoad_Click" />
+                            <MenuItem Header="MongoDB Save" Name="MenuCMSave" Click="MenuMongoSave_Click" />
+                        </ContextMenu>
+                    </Grid.ContextMenu>
+                    <TextBlock x:Name="Characters" Text="Characters: " FontWeight ="Bold" FontSize="22" Foreground="#FFDC1010" />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20,25,20,20">
+                        <StackPanel Margin="25,25 0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Width="286" x:Name="cmbCharacter" SelectionChanged="cmbCharacter_SelectionChanged"/>
+                                <Button x:Name="btnCharAdd" Content="Add" Click="btnCharAdd_Click" />
+                                <Button x:Name="btnCharUpdate" Content="Update" Click="btnCharUpdate_Click" />
+                                <Button x:Name="btnCharDelete" Content="Delete" Click="btnCharDelete_Click" />
+                            </StackPanel>
+
+                            <Label Content="Name" />
+                            <TextBox x:Name="tbCharName" />
+                            <Label Content="Primary Attack" />
+                            <TextBox x:Name="tbCharPrimary" />
+                            <Label Content="Secondary Attack" />
+                            <TextBox x:Name="tbCharSecondary" />
+                            <Label x:Name="lbCharAttack" Content="Attack Strength" />
+                            <Slider x:Name="slCharAttack" Minimum="1" Maximum="100" TickFrequency="10"
+                                TickPlacement="BottomRight" ValueChanged="slCharAttack_ValueChanged" IsSnapToTickEnabled="True" />
+                            <Label x:Name="lbCharDefense" Content="Defensive Strength" />
+                            <Slider x:Name="slCharDefense" Maximum="100" Minimum="1" TickFrequency="10"
+                                TickPlacement="BottomRight" ValueChanged="slCharDefense_ValueChanged" IsSnapToTickEnabled="True" />
+                            <Label x:Name="lbCharHealth" Content="Health Strength" />
+                            <Slider x:Name="slCharHealth" Maximum="100" Minimum="1" TickFrequency="10"
+                                TickPlacement="BottomRight" ValueChanged="slCharHealth_ValueChanged" IsSnapToTickEnabled="True" />
+
+                            <DataGrid x:Name="dgCharacter" SelectionChanged="dgCharacter_SelectionChanged" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Weapon Editor">
+
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
