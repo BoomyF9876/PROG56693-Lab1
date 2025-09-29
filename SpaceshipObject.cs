@@ -14,6 +14,9 @@ namespace W2CharacterEditor
     [BsonIgnoreExtraElements]
     internal class SpaceshipObject
     {
+        [BsonElement(elementName: "_id")]
+        public ObjectId id { get; set; }
+
         [BsonElement(elementName: "Name")]
         public string Name { get; set; }
 
@@ -33,8 +36,9 @@ namespace W2CharacterEditor
         public float WarpSpeed { get; set; }
 
         public SpaceshipObject(
-            string n, string p, string s, float a, int d, float h)
+            ObjectId i, string n, string p, string s, float a, int d, float h)
         {
+            id = i;
             Name = n;
             Class = p;
             SpecialAbility = s;
@@ -44,6 +48,8 @@ namespace W2CharacterEditor
         }
 
         [JsonConstructor]
-        public SpaceshipObject() { }
+        public SpaceshipObject() {
+            id = new ObjectId();
+        }
     }
 }

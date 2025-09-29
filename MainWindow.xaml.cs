@@ -16,6 +16,9 @@ using System.IO;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Threading.Tasks;
+using System.Reflection;
+using System;
+using System.Xml.Linq;
 
 namespace W2CharacterEditor;
 
@@ -26,6 +29,7 @@ public partial class MainWindow : Window
 {
     private List<CharacterObject> characters = new List<CharacterObject>();
     private List<SpaceshipObject> spaceships = new List<SpaceshipObject>();
+    private BrushConverter bc = new BrushConverter();
     private MongoClient dbClient = new MongoClient("mongodb+srv://boomyf9876_db_user:pw123@prog56693f25.gqotksc.mongodb.net/?retryWrites=true&w=majority&appName=PROG56693F25");
     public MainWindow()
     {
@@ -191,6 +195,49 @@ public partial class MainWindow : Window
         }
     }
 
+    private StackPanel InsertNewEntity(
+        object _obj, PropertyInfo[] _obj_properties,
+        string _obj_name, string _obj_id
+    )
+    {
+        StackPanel listItem = new StackPanel();
+        listItem.Name = $"{_obj_name}{_obj_id}";
+        listItem.Margin = new Thickness(10, 0, 0, 10);
+        listItem.Background = (Brush)bc.ConvertFrom("#A80874");
+        listItem.Width = 230;
+        listItem.Height = double.NaN;
+
+        foreach (PropertyInfo property in _obj_properties)
+        {
+            string propertyName = property.Name;
+            var propertyValue = property.GetValue(_obj);
+
+            StackPanel spEntity = new StackPanel();
+            spEntity.Margin = new Thickness(0, 3, 0, 3);
+            spEntity.Orientation = Orientation.Horizontal;
+
+            Label entityLabel = new Label();
+            entityLabel.Width = 100;
+            entityLabel.Content = $"{propertyName}:";
+
+            TextBox entityTextBox = new TextBox();
+            entityTextBox.Width = 120;
+            entityTextBox.Name = $"{_obj_name}{_obj_id}{propertyName}";
+
+            if (propertyValue != null)
+            {
+                entityTextBox.Text = propertyValue.ToString();
+            }
+
+            spEntity.Children.Add(entityLabel);
+            spEntity.Children.Add(entityTextBox);
+
+            listItem.Children.Add(spEntity);
+        }
+
+        return listItem;
+    }
+
     private async void MenuMongoLoad_Click(object sender, RoutedEventArgs e)
     {
         var database = dbClient.GetDatabase("PROG56993F25");
@@ -225,7 +272,17 @@ public partial class MainWindow : Window
 
     private void btnSpaceshipAdd_Click(object sender, RoutedEventArgs e)
     {
+        PropertyInfo[] properties = typeof(SpaceshipObject).GetProperties().Skip(1).ToArray();
+        SpaceshipObject spaceship = new SpaceshipObject();
 
+        lbSpaceShip.Children.Add(InsertNewEntity(
+            spaceship,
+            properties,
+            "Spaceship",
+            spaceship.id.ToString()
+        ));
+
+        refreshScreen();
     }
 
     private void btnSpaceshipUpdate_Click(object sender, RoutedEventArgs e)
@@ -240,8 +297,17 @@ public partial class MainWindow : Window
         List<SpaceshipObject> collection = await database.GetCollection<SpaceshipObject>("Spaceships").Find(_ => true).As<SpaceshipObject>().ToListAsync();
 
         spaceships = collection;
+        PropertyInfo[] properties = typeof(SpaceshipObject).GetProperties().Skip(1).ToArray();
 
-        //lbSpaceShip.Children.Add(spSpaceShip);
+        foreach (SpaceshipObject spaceship in spaceships)
+        {
+            lbSpaceShip.Children.Add(InsertNewEntity(
+                spaceship,
+                properties,
+                "Spaceship",
+                spaceship.id.ToString()
+            ));
+        }
 
         refreshScreen();
 
