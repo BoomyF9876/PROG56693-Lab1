@@ -25,6 +25,7 @@ namespace W2CharacterEditor;
 public partial class MainWindow : Window
 {
     private List<CharacterObject> characters = new List<CharacterObject>();
+    private List<SpaceshipObject> spaceships = new List<SpaceshipObject>();
     private MongoClient dbClient = new MongoClient("mongodb+srv://boomyf9876_db_user:pw123@prog56693f25.gqotksc.mongodb.net/?retryWrites=true&w=majority&appName=PROG56693F25");
     public MainWindow()
     {
@@ -220,5 +221,30 @@ public partial class MainWindow : Window
     private void MenuUpload_Click(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void btnSpaceshipAdd_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void btnSpaceshipUpdate_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private async void btnSpaceshipLoad_Click(object sender, RoutedEventArgs e)
+    {
+        var database = dbClient.GetDatabase("PROG56993F25");
+
+        List<SpaceshipObject> collection = await database.GetCollection<SpaceshipObject>("Spaceships").Find(_ => true).As<SpaceshipObject>().ToListAsync();
+
+        spaceships = collection;
+
+        //lbSpaceShip.Children.Add(spSpaceShip);
+
+        refreshScreen();
+
+        MessageBox.Show("MongoDB Download Complete", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 }

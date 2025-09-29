@@ -24,6 +24,57 @@
             </MenuItem>
         </Menu>
         <TabControl>
+            <TabItem Header="Space ships">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel>
+                        <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                            <TextBlock x:Name="Spaceship" Text="Space ships: " FontWeight ="Bold" FontSize="20" Foreground="#A80874" />
+                            <Button Margin="10,5,0,0" x:Name="btnSpaceshipLoad" Width="100" Content="Load from DB" Click="btnSpaceshipLoad_Click" />
+                            <Button Margin="20,5,0,0" x:Name="btnSpaceshipUpdate" Width="100" Content="Update All" Click="btnSpaceshipUpdate_Click" />
+                            <Button Margin="20,5,0,0" x:Name="btnSpaceshipAdd" Width="100" Content="Add New" Click="btnSpaceshipAdd_Click" />
+                        </StackPanel>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
+                            <Grid Name="lbSpaceShip" Margin="0,4,0,0" Background="#FFE5E5E5">
+                                <StackPanel Name="spSpaceShip" Margin="0,0,0,0" Background="#A80874" Width="230" Height="Auto">
+                                    <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+                                        <Label Width="100" Content="Name: " />
+                                        <TextBox x:Name="spaceshipName" Width="120" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                                        <Label Width="100" Content="Class: " />
+                                        <TextBox x:Name="spaceshipClass" Width="120" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                                        <Label Width="100" Content="Special Ability: " />
+                                        <TextBox x:Name="spaceshipSpAbility" Width="120" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                                        <Label Width="100" Content="Strength: " />
+                                        <TextBox x:Name="spaceshipStr" Width="120" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                                        <Label Width="100" Content="Warp Range: " />
+                                        <TextBox x:Name="spaceshipWarpRange" Width="120" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,4,0,8" Orientation="Horizontal">
+                                        <Label Width="100" Content="Warp Speed: " />
+                                        <TextBox x:Name="spaceshipWarpSpeed" Width="120" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Officers">
+
+            </TabItem>
+            <TabItem Header="Planetary Systems">
+
+            </TabItem>
+            <TabItem Header="Missions">
+
+            </TabItem>
             <TabItem Header="Character Editor">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ContextMenu>
@@ -36,7 +87,7 @@
                     </Grid.ContextMenu>
                     <TextBlock x:Name="Characters" Text="Characters: " FontWeight ="Bold" FontSize="22" Foreground="#FFDC1010" />
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20,25,20,20">
-                        <StackPanel Margin="25,25 0,0">
+                        <StackPanel Margin="25,25 0,0" Background="AliceBlue">
                             <StackPanel Orientation="Horizontal">
                                 <ComboBox Width="286" x:Name="cmbCharacter" SelectionChanged="cmbCharacter_SelectionChanged"/>
                                 <Button x:Name="btnCharAdd" Content="Add" Click="btnCharAdd_Click" />
@@ -64,9 +115,6 @@
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
-            </TabItem>
-            <TabItem Header="Weapon Editor">
-
             </TabItem>
         </TabControl>
     </DockPanel>
