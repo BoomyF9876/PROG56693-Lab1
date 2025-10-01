@@ -287,7 +287,13 @@ public partial class MainWindow : Window
 
     private void btnSpaceshipUpdate_Click(object sender, RoutedEventArgs e)
     {
+        var database = dbClient.GetDatabase("PROG56993F25");
+        var collection = database.GetCollection<SpaceshipObject>("Spaceships");
 
+        collection.DeleteMany(new BsonDocument());
+        collection.InsertMany(spaceships);
+
+        MessageBox.Show("MongoDB Upload Complete", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private async void btnSpaceshipLoad_Click(object sender, RoutedEventArgs e)
@@ -299,6 +305,7 @@ public partial class MainWindow : Window
         spaceships = collection;
         PropertyInfo[] properties = typeof(SpaceshipObject).GetProperties().Skip(1).ToArray();
 
+        lbSpaceShip.Children.Clear();
         foreach (SpaceshipObject spaceship in spaceships)
         {
             lbSpaceShip.Children.Add(InsertNewEntity(

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:W2CharacterEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" MinHeight="450" Width="800"
+        SizeToContent="Height">
     <DockPanel>
         <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
             <MenuItem Header="File" VerticalAlignment="Center">
@@ -33,10 +34,7 @@
                             <Button Margin="20,5,0,0" x:Name="btnSpaceshipUpdate" Width="100" Content="Update All" Click="btnSpaceshipUpdate_Click" />
                             <Button Margin="20,5,0,0" x:Name="btnSpaceshipAdd" Width="100" Content="Add New" Click="btnSpaceshipAdd_Click" />
                         </StackPanel>
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
-                            <WrapPanel Name="lbSpaceShip" Margin="0,4,0,0" VerticalAlignment="Top"
-                                       MinWidth="250" Width="{Binding ElementName=MyScrollViewer, Path=ViewportWidth}" />
-                        </ScrollViewer>
+                        <WrapPanel Name="lbSpaceShip" Margin="0,10,0,20" Orientation="Horizontal" />
                     </StackPanel>
                 </Grid>
             </TabItem>
