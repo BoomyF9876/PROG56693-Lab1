@@ -12,7 +12,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace W2CharacterEditor
 {
     [BsonIgnoreExtraElements]
-    internal class SpaceshipObject
+    internal class SpaceshipInput
     {
         [BsonElement(elementName: "_id")]
         public ObjectId id { get; set; }
@@ -27,16 +27,16 @@ namespace W2CharacterEditor
         public string SpecialAbility { get; set; }
 
         [BsonElement(elementName: "Strength")]
-        public float Strength { get; set; }
+        public string Strength { get; set; }
 
         [BsonElement(elementName: "Warp Range")]
-        public int WarpRange { get; set; }
+        public string WarpRange { get; set; }
 
         [BsonElement(elementName: "Warp Speed")]
-        public float WarpSpeed { get; set; }
+        public string WarpSpeed { get; set; }
 
-        public SpaceshipObject(
-            ObjectId i, string n, string p, string s, float a, int d, float h)
+        public SpaceshipInput(
+            ObjectId i, string n, string p, string s, string a, string d, string h)
         {
             id = i;
             Name = n;
@@ -48,14 +48,8 @@ namespace W2CharacterEditor
         }
 
         [JsonConstructor]
-        public SpaceshipObject() {
-            id = ObjectId.GenerateNewId();
-            Name = "";
-            Class = "";
-            SpecialAbility = "";
-            Strength = 0;
-            WarpRange = 0;
-            WarpSpeed = 0;
+        public SpaceshipInput() {
+            id = new ObjectId();
         }
     }
 }

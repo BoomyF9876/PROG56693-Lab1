@@ -28,12 +28,13 @@
             <TabItem Header="Space ships">
                 <Grid Background="#FFE5E5E5">
                     <StackPanel>
-                        <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                        <DockPanel Margin="0,0,0,0">
                             <TextBlock x:Name="Spaceship" Text="Space ships: " FontWeight ="Bold" FontSize="20" Foreground="#A80874" />
                             <Button Margin="10,5,0,0" x:Name="btnSpaceshipLoad" Width="100" Content="Load from DB" Click="btnSpaceshipLoad_Click" />
                             <Button Margin="20,5,0,0" x:Name="btnSpaceshipUpdate" Width="100" Content="Update All" Click="btnSpaceshipUpdate_Click" />
                             <Button Margin="20,5,0,0" x:Name="btnSpaceshipAdd" Width="100" Content="Add New" Click="btnSpaceshipAdd_Click" />
-                        </StackPanel>
+                            <Label Name="SpaceshipErrLabel" MinWidth="100" HorizontalAlignment="Right" Foreground="Red"/>
+                        </DockPanel>
                         <WrapPanel Name="lbSpaceShip" Margin="0,10,0,20" Orientation="Horizontal" />
                     </StackPanel>
                 </Grid>

@@ -31,6 +31,7 @@ public partial class MainWindow : Window
     private List<SpaceshipObject> spaceships = new List<SpaceshipObject>();
     private BrushConverter bc = new BrushConverter();
     private MongoClient dbClient = new MongoClient("mongodb+srv://boomyf9876_db_user:pw123@prog56693f25.gqotksc.mongodb.net/?retryWrites=true&w=majority&appName=PROG56693F25");
+
     public MainWindow()
     {
         InitializeComponent();
@@ -201,9 +202,9 @@ public partial class MainWindow : Window
     )
     {
         StackPanel listItem = new StackPanel();
-        listItem.Name = $"{_obj_name}{_obj_id}";
+        listItem.Name = $"ID{_obj_id}";
         listItem.Margin = new Thickness(10, 0, 0, 10);
-        listItem.Background = (Brush)bc.ConvertFrom("#A80874");
+        listItem.Background = (Brush)bc.ConvertFrom("#A7CECB");
         listItem.Width = 230;
         listItem.Height = double.NaN;
 
@@ -222,7 +223,8 @@ public partial class MainWindow : Window
 
             TextBox entityTextBox = new TextBox();
             entityTextBox.Width = 120;
-            entityTextBox.Name = $"{_obj_name}{_obj_id}{propertyName}";
+            entityTextBox.Name = $"ID{_obj_id}NAME{propertyName}";
+            entityTextBox.TextChanged += textBox_TextChanged;
 
             if (propertyValue != null)
             {
@@ -234,6 +236,11 @@ public partial class MainWindow : Window
 
             listItem.Children.Add(spEntity);
         }
+
+        Button deleteBtn = new Button();
+        deleteBtn.Name = $"ID{_obj_id}DELETE";
+        deleteBtn.Width = 100;
+        deleteBtn.Click += deleteBtn_OnClick;
 
         return listItem;
     }
@@ -274,6 +281,8 @@ public partial class MainWindow : Window
     {
         PropertyInfo[] properties = typeof(SpaceshipObject).GetProperties().Skip(1).ToArray();
         SpaceshipObject spaceship = new SpaceshipObject();
+
+        spaceships.Add(spaceship);
 
         lbSpaceShip.Children.Add(InsertNewEntity(
             spaceship,
@@ -319,5 +328,80 @@ public partial class MainWindow : Window
         refreshScreen();
 
         MessageBox.Show("MongoDB Download Complete", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    private void deleteBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        string delBtnName = ((TextBox)sender).Name;
+        string delEntityID = delBtnName.Split("DELETE")[0];
+
+
+    }
+    private void textBox_TextChanged(object sender, RoutedEventArgs e)
+    {
+        if (!this.IsLoaded)
+        {
+            return;
+        }
+        string txtbxName = ((TextBox)sender).Name;
+        string txtbxTxt = ((TextBox)sender).Text;
+        string keyName = txtbxName.Split("NAME")[1];
+        string objID = txtbxName.Split("NAME")[0].Split("ID")[1];
+        string errID = $"ID{objID}ERROR{keyName}";
+        int index = spaceships.FindIndex(obj => obj.id.ToString() == objID);
+        PropertyInfo property = typeof(SpaceshipObject).GetProperty(keyName);
+
+        if (string.IsNullOrEmpty(txtbxTxt))
+        {
+            SpaceshipErrLabel.Content = $"{keyName} cannot be empty";
+        }
+        else
+        {
+            SpaceshipErrLabel.Content = "";
+            bool isInputValid = true;
+
+            Type type = property.GetValue(spaceships[index]).GetType();
+            if (type == typeof(Int32))
+            {
+                Int32 parsedObj;
+                if (Int32.TryParse(txtbxTxt, out parsedObj))
+                {
+                    property.SetValue(spaceships[index], parsedObj);
+                }
+                else
+                {
+                    isInputValid = false;
+                }
+            }
+            else if (type == typeof(Single))
+            {
+                Single parsedObj;
+                if (Single.TryParse(txtbxTxt, out parsedObj))
+                {
+                    property.SetValue(spaceships[index], parsedObj);
+                }
+                else
+                {
+                    isInputValid = false;
+                }
+            }
+            else if (type == typeof(Decimal))
+            {
+                Decimal parsedObj;
+                if (Decimal.TryParse(txtbxTxt, out parsedObj))
+                {
+                    property.SetValue(spaceships[index], parsedObj);
+                }
+                else
+                {
+                    isInputValid = false;
+                }
+            }
+            else
+            {
+                property.SetValue(spaceships[index], txtbxTxt);
+            }
+            if (!isInputValid) SpaceshipErrLabel.Content = $"Invalid input in {keyName}";
+        }
     }
 }
