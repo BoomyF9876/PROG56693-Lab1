@@ -9,6 +9,14 @@ using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization.Attributes;
 
+enum ShipSpecialty
+{
+    Battleship,
+    Explorer,
+    Interceptor,
+    Miner
+}
+
 namespace W2CharacterEditor
 {
     [BsonIgnoreExtraElements]
@@ -21,7 +29,7 @@ namespace W2CharacterEditor
         public string Name { get; set; }
 
         [BsonElement(elementName: "Class")]
-        public string Class { get; set; }
+        public ShipSpecialty Class { get; set; }
 
         [BsonElement(elementName: "Special Ability")]
         public string SpecialAbility { get; set; }
@@ -33,10 +41,11 @@ namespace W2CharacterEditor
         public int WarpRange { get; set; }
 
         [BsonElement(elementName: "Warp Speed")]
-        public float WarpSpeed { get; set; }
+        public decimal WarpSpeed { get; set; }
 
+        [JsonConstructor]
         public SpaceshipObject(
-            ObjectId i, string n, string p, string s, int a, int d, float h)
+            ObjectId i, string n, ShipSpecialty p, string s, int a, int d, decimal h)
         {
             id = i;
             Name = n;
@@ -47,11 +56,9 @@ namespace W2CharacterEditor
             WarpSpeed = h;
         }
 
-        [JsonConstructor]
-        public SpaceshipObject() {
-            id = ObjectId.GenerateNewId();
+        public SpaceshipObject(ObjectId _id) {
+            id = _id;
             Name = "";
-            Class = "";
             SpecialAbility = "";
             Strength = 0;
             WarpRange = 0;

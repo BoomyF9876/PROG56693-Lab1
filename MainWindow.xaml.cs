@@ -36,11 +36,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-
-        //characters.Add(new CharacterObject("Seth", "Stomp", "Body Slam", 75, 34, 65));
-        //characters.Add(new CharacterObject("Curry", "Stomp", "Body Slam", 75, 34, 65));
-        //characters.Add(new CharacterObject("Dad", "Stomp", "Body Slam", 75, 34, 65));
-
         refreshScreen();
     }
 
@@ -129,7 +124,7 @@ public partial class MainWindow : Window
             slCharDefense.Value = c.DefenseStrength;
             slCharHealth.Value = c.HealthStrength;
         } catch(Exception ex) { }
-    }
+    } 
 
     private void dgCharacter_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -222,18 +217,34 @@ public partial class MainWindow : Window
             entityLabel.Width = 100;
             entityLabel.Content = $"{propertyName}:";
 
-            TextBox entityTextBox = new TextBox();
-            entityTextBox.Width = 120;
-            entityTextBox.Name = $"ID{_obj_id}NAME{propertyName}";
-            entityTextBox.TextChanged += textBox_TextChanged;
-
-            if (propertyValue != null)
-            {
-                entityTextBox.Text = propertyValue.ToString();
-            }
-
             spEntity.Children.Add(entityLabel);
-            spEntity.Children.Add(entityTextBox);
+            if (propertyName != "Class")
+            {
+                TextBox entityTextBox = new TextBox();
+                entityTextBox.Width = 120;
+                entityTextBox.Name = $"ID{_obj_id}NAME{propertyName}";
+                entityTextBox.TextChanged += textBox_TextChanged;
+                if (propertyValue != null)
+                {
+                    entityTextBox.Text = propertyValue.ToString();
+                }
+                spEntity.Children.Add(entityTextBox);
+            }
+            else
+            {
+                ComboBox entityTextBox = new ComboBox();
+                entityTextBox.Width = 120;
+                entityTextBox.Name = $"ID{_obj_id}NAME{propertyName}";
+
+                foreach (ShipSpecialty sp in Enum.GetValues(typeof(ShipSpecialty)).Cast<ShipSpecialty>())
+                {
+                    entityTextBox.Items.Add(sp.ToString());
+                }
+                entityTextBox.SelectionChanged += comboBox_SelectionChanged;
+                entityTextBox.SelectedItem = propertyValue;
+
+                spEntity.Children.Add(entityTextBox);
+            }
 
             listItem.Children.Add(spEntity);
         }
@@ -272,15 +283,6 @@ public partial class MainWindow : Window
 
         MessageBox.Show("MongoDB Upload Complete", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
     }
-    private void MenuDownLoad_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void MenuUpload_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
 
     private void btnSpaceshipAdd_Click(object sender, RoutedEventArgs e)
     {
@@ -295,19 +297,84 @@ public partial class MainWindow : Window
             "Spaceship",
             spaceship.id.ToString()
         ));
-
-        refreshScreen();
     }
 
     private void btnSpaceshipUpdate_Click(object sender, RoutedEventArgs e)
     {
-        var database = dbClient.GetDatabase("PROG56993F25");
-        var collection = database.GetCollection<SpaceshipObject>("Spaceships");
-
-        collection.DeleteMany(new BsonDocument());
-        collection.InsertMany(spaceships);
-
-        MessageBox.Show("MongoDB Upload Complete", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        PropertyInfo[] properties_ss_input = typeof(SpaceshipInput).GetProperties().Skip(1).ToArray();
+        PropertyInfo[] properties_ss = typeof(SpaceshipObject).GetProperties().Skip(1).ToArray();
+        var collection = dbClient.GetDatabase("PROG56993F25").GetCollection<SpaceshipObject>("Spaceships");
+        string errorMsg = "";
+        spaceships.Clear();
+        foreach (SpaceshipInput spaceship in spaceshipsInput)
+        {
+            SpaceshipObject newSpaceShip = new SpaceshipObject(spaceship.id);
+            for (int i = 0; i < properties_ss.Length; i++)
+            {
+                string propertyName = properties_ss_input[i].Name;
+                string spInputVal = (string)properties_ss_input[i].GetValue(spaceship);
+                if (string.IsNullOrEmpty(spInputVal))
+                {
+                    errorMsg += $"•{propertyName} cannot be empty\n";
+                }
+                else
+                {
+                    Type type = properties_ss[i].GetValue(newSpaceShip).GetType();
+                    if (type == typeof(Int32))
+                    {
+                        Int32 parsedObj;
+                        if (Int32.TryParse(spInputVal, out parsedObj))
+                        {
+                            properties_ss[i].SetValue(newSpaceShip, parsedObj);
+                        }
+                        else
+                        {
+                            errorMsg += $"•{propertyName} can only be of type Int32\n";
+                        }
+                    }
+                    else if (type == typeof(Decimal))
+                    {
+                        Decimal parsedObj;
+                        if (Decimal.TryParse(spInputVal, out parsedObj))
+                        {
+                            properties_ss[i].SetValue(newSpaceShip, parsedObj);
+                        }
+                        else
+                        {
+                            errorMsg += $"•{propertyName} can only be of type Decimal\n";
+                        }
+                    }
+                    else if (type == typeof(ShipSpecialty))
+                    {
+                        ShipSpecialty parsedObj;
+                        if (ShipSpecialty.TryParse(spInputVal, out parsedObj))
+                        {
+                            properties_ss[i].SetValue(newSpaceShip, parsedObj);
+                        }
+                        else
+                        {
+                            errorMsg += $"•{propertyName} can only be of type ShipSpecialty\n";
+                        }
+                    }
+                    else
+                    {
+                        properties_ss[i].SetValue(newSpaceShip, spInputVal);
+                    }
+                }
+            }
+            spaceships.Add(newSpaceShip);
+        }
+        
+        if (errorMsg == "")
+        {
+            collection.DeleteMany(new BsonDocument());
+            collection.InsertMany(spaceships);
+            MessageBox.Show("MongoDB Upload Complete", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        else
+        {
+            MessageBox.Show(errorMsg, "MongoDB Upload Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
     }
 
     private async void btnSpaceshipLoad_Click(object sender, RoutedEventArgs e)
@@ -315,14 +382,14 @@ public partial class MainWindow : Window
         var database = dbClient.GetDatabase("PROG56993F25");
 
         List<SpaceshipObject> collection = await database.GetCollection<SpaceshipObject>("Spaceships").Find(_ => true).As<SpaceshipObject>().ToListAsync();
+
+        spaceshipsInput.Clear();
         foreach (SpaceshipObject _obj in collection)
         {
             spaceshipsInput.Add(new SpaceshipInput(_obj));
         }
 
         Reload_Spaceship_List();
-
-        refreshScreen();
 
         MessageBox.Show("MongoDB Download Complete", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
     }
@@ -360,7 +427,6 @@ public partial class MainWindow : Window
         string txtbxTxt = ((TextBox)sender).Text;
         string keyName = txtbxName.Split("NAME")[1];
         string objID = txtbxName.Split("NAME")[0].Split("ID")[1];
-        string errID = $"ID{objID}ERROR{keyName}";
         int index = spaceshipsInput.FindIndex(obj => obj.id.ToString() == objID);
         PropertyInfo property = typeof(SpaceshipInput).GetProperty(keyName);
 
@@ -371,23 +437,27 @@ public partial class MainWindow : Window
         else
         {
             SpaceshipErrLabel.Content = "";
-            Type type = property.GetValue(spaceshipsInput[index]).GetType();
-            if (type == typeof(Int32))
-            {
-                Int32 parsedObj;
-                if (!Int32.TryParse(txtbxTxt, out parsedObj))
-                {
-                    SpaceshipErrLabel.Content = $"{keyName} can only be of type Int32";
-                }
-            }
-            else if (type == typeof(Single))
-            {
-                Single parsedObj;
-                if (!Single.TryParse(txtbxTxt, out parsedObj))
-                {
-                    SpaceshipErrLabel.Content = $"{keyName} can only be of type Single";
-                }
-            }
+            property.SetValue(spaceshipsInput[index], txtbxTxt);
+        }
+    }
+    private void comboBox_SelectionChanged(object sender, RoutedEventArgs e)
+    {
+        if (!this.IsLoaded) return;
+        string txtbxName = ((ComboBox)sender).Name;
+        string txtbxTxt = ((ComboBox)sender).SelectedItem.ToString();
+        string keyName = txtbxName.Split("NAME")[1];
+        string objID = txtbxName.Split("NAME")[0].Split("ID")[1];
+        int index = spaceshipsInput.FindIndex(obj => obj.id.ToString() == objID);
+
+        PropertyInfo property = typeof(SpaceshipInput).GetProperty(keyName);
+
+        if (string.IsNullOrEmpty(txtbxTxt))
+        {
+            SpaceshipErrLabel.Content = $"{keyName} cannot be empty";
+        }
+        else
+        {
+            SpaceshipErrLabel.Content = "";
             property.SetValue(spaceshipsInput[index], txtbxTxt);
         }
     }

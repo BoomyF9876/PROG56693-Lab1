@@ -35,6 +35,7 @@ namespace W2CharacterEditor
         [BsonElement(elementName: "Warp Speed")]
         public string WarpSpeed { get; set; }
 
+        [JsonConstructor]
         public SpaceshipInput()
         {
             id = ObjectId.GenerateNewId();
@@ -46,11 +47,10 @@ namespace W2CharacterEditor
             WarpSpeed = "";
         }
 
-        [JsonConstructor]
         public SpaceshipInput(SpaceshipObject _obj) {
             id = _obj.id;
             Name = _obj.Name;
-            Class = _obj.Class;
+            Class = _obj.Class.ToString();
             SpecialAbility = _obj.SpecialAbility;
             Strength = _obj.Strength.ToString();
             WarpRange = _obj.WarpRange.ToString();
