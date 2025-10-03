@@ -9,85 +9,40 @@
         SizeToContent="Height">
     <DockPanel>
         <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
-            <MenuItem Header="File" VerticalAlignment="Center">
-                <MenuItem Header="Quit" Name="MenuQuit" Click="MenuQuit_Click" />
-            </MenuItem>
-            <MenuItem Header="Edit" VerticalAlignment="Center">
-                <MenuItem Header="Load" Name="MenuLoad" Click="MenuLoad_Click" />
-                <MenuItem Header="Save" Name="MenuSave" Click="MenuSave_Click" />
-            </MenuItem>
             <MenuItem Header="Database" VerticalAlignment="Center">
-                <MenuItem Header="Download From MongoDB" Name="MenuDownLoad" Click="MenuMongoLoad_Click" />
-                <MenuItem Header="Upload to MongoDB" Name="MenuUpload" Click="MenuMongoSave_Click" />
-            </MenuItem>
-            <MenuItem Header="Help" VerticalAlignment="Center">
-                <MenuItem Header="About" Name="MenuAbout" />
+                <MenuItem Header="Download All From MongoDB" Name="MenuDownLoad" Click="MenuDownLoad_Click" />
             </MenuItem>
         </Menu>
         <TabControl>
             <TabItem Header="Space ships">
-                <Grid Background="#FFE5E5E5">
-                    <StackPanel>
-                        <DockPanel Margin="0,0,0,0">
-                            <TextBlock x:Name="Spaceship" Text="Space ships: " FontWeight ="Bold" FontSize="20" Foreground="#A80874" />
-                            <Button Margin="10,5,0,0" x:Name="btnSpaceshipLoad" Width="100" Content="Reload from DB" Click="btnSpaceshipLoad_Click" />
-                            <Button Margin="20,5,0,0" x:Name="btnSpaceshipUpdate" Width="100" Content="Update All" Click="btnSpaceshipUpdate_Click" />
-                            <Button Margin="20,5,0,0" x:Name="btnSpaceshipAdd" Width="100" Content="Add New" Click="btnSpaceshipAdd_Click" />
-                            <Label Name="SpaceshipErrLabel" MinWidth="100" HorizontalAlignment="Right" Foreground="Red"/>
-                        </DockPanel>
-                        <WrapPanel Name="lbSpaceShip" Margin="0,10,0,20" Orientation="Horizontal" />
-                    </StackPanel>
-                </Grid>
+                <StackPanel Background="#FFE5E5E5">
+                    <DockPanel Margin="0,0,0,0">
+                        <TextBlock x:Name="Spaceship" Text="Space ships: " FontWeight ="Bold" FontSize="20" Foreground="#73CAC3" />
+                        <Button Margin="10,5,0,0" x:Name="btnSpaceshipLoad" Width="100" Content="Reload from DB" Click="btnSpaceshipLoad_Click" />
+                        <Button Margin="20,5,0,0" x:Name="btnSpaceshipUpdate" Width="100" Content="Update All" Click="btnSpaceshipUpdate_Click" />
+                        <Button Margin="20,5,0,0" x:Name="btnSpaceshipAdd" Width="100" Content="Add New" Click="btnSpaceshipAdd_Click" />
+                        <Label Name="SpaceshipErrLabel" MinWidth="100" HorizontalAlignment="Right" Foreground="Red"/>
+                    </DockPanel>
+                    <WrapPanel Name="wpSpaceShip" Margin="0,10,0,20" Orientation="Horizontal" />
+                </StackPanel>
             </TabItem>
             <TabItem Header="Officers">
 
             </TabItem>
             <TabItem Header="Planetary Systems">
-
+                <StackPanel Background="#FFE5E5E5">
+                    <DockPanel Margin="0,0,0,0">
+                        <TextBlock x:Name="Planets" Text="Planetary Systems: " FontWeight ="Bold" FontSize="20" Foreground="#C4C6E7" />
+                        <Button Margin="10,5,0,0" x:Name="btnPlanetLoad" Width="100" Content="Reload from DB" Click="btnPlanetLoad_Click" />
+                        <Button Margin="20,5,0,0" x:Name="btnPlanetUpdate" Width="100" Content="Update All" Click="btnPlanetUpdate_Click" />
+                        <Button Margin="20,5,0,0" x:Name="btnPlanetAdd" Width="100" Content="Add New" Click="btnPlanetAdd_Click" />
+                        <Label Name="PlanetErrLabel" MinWidth="100" HorizontalAlignment="Right" Foreground="Red"/>
+                    </DockPanel>
+                    <WrapPanel Name="wpPlanet" Margin="0,10,0,20" Orientation="Horizontal" />
+                </StackPanel>
             </TabItem>
             <TabItem Header="Missions">
 
-            </TabItem>
-            <TabItem Header="Character Editor">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Load" Name="MenuCLoad" Click="MenuCLoad_Click" />
-                            <MenuItem Header="Save" Name="MenuCSave" Click="MenuCSave_Click" />
-                            <MenuItem Header="MongoDB Load" Name="MenuCMLoad" Click="MenuMongoLoad_Click" />
-                            <MenuItem Header="MongoDB Save" Name="MenuCMSave" Click="MenuMongoSave_Click" />
-                        </ContextMenu>
-                    </Grid.ContextMenu>
-                    <TextBlock x:Name="Characters" Text="Characters: " FontWeight ="Bold" FontSize="22" Foreground="#FFDC1010" />
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20,25,20,20">
-                        <StackPanel Margin="25,25 0,0" Background="AliceBlue">
-                            <StackPanel Orientation="Horizontal">
-                                <ComboBox Width="286" x:Name="cmbCharacter" SelectionChanged="cmbCharacter_SelectionChanged"/>
-                                <Button x:Name="btnCharAdd" Content="Add" Click="btnCharAdd_Click" />
-                                <Button x:Name="btnCharUpdate" Content="Update" Click="btnCharUpdate_Click" />
-                                <Button x:Name="btnCharDelete" Content="Delete" Click="btnCharDelete_Click" />
-                            </StackPanel>
-
-                            <Label Content="Name" />
-                            <TextBox x:Name="tbCharName" />
-                            <Label Content="Primary Attack" />
-                            <TextBox x:Name="tbCharPrimary" />
-                            <Label Content="Secondary Attack" />
-                            <TextBox x:Name="tbCharSecondary" />
-                            <Label x:Name="lbCharAttack" Content="Attack Strength" />
-                            <Slider x:Name="slCharAttack" Minimum="1" Maximum="100" TickFrequency="10"
-                                TickPlacement="BottomRight" ValueChanged="slCharAttack_ValueChanged" IsSnapToTickEnabled="True" />
-                            <Label x:Name="lbCharDefense" Content="Defensive Strength" />
-                            <Slider x:Name="slCharDefense" Maximum="100" Minimum="1" TickFrequency="10"
-                                TickPlacement="BottomRight" ValueChanged="slCharDefense_ValueChanged" IsSnapToTickEnabled="True" />
-                            <Label x:Name="lbCharHealth" Content="Health Strength" />
-                            <Slider x:Name="slCharHealth" Maximum="100" Minimum="1" TickFrequency="10"
-                                TickPlacement="BottomRight" ValueChanged="slCharHealth_ValueChanged" IsSnapToTickEnabled="True" />
-
-                            <DataGrid x:Name="dgCharacter" SelectionChanged="dgCharacter_SelectionChanged" />
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
             </TabItem>
         </TabControl>
     </DockPanel>
