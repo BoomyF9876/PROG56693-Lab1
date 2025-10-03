@@ -27,7 +27,7 @@ namespace W2CharacterEditor
         public string SpecialAbility { get; set; }
 
         [BsonElement(elementName: "Strength")]
-        public float Strength { get; set; }
+        public int Strength { get; set; }
 
         [BsonElement(elementName: "Warp Range")]
         public int WarpRange { get; set; }
@@ -36,7 +36,7 @@ namespace W2CharacterEditor
         public float WarpSpeed { get; set; }
 
         public SpaceshipObject(
-            ObjectId i, string n, string p, string s, float a, int d, float h)
+            ObjectId i, string n, string p, string s, int a, int d, float h)
         {
             id = i;
             Name = n;
