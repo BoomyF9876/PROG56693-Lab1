@@ -29,7 +29,7 @@ namespace W2CharacterEditor
         public string Name { get; set; }
 
         [BsonElement(elementName: "Class")]
-        public ShipSpecialty Class { get; set; }
+        public string Class { get; set; }
 
         [BsonElement(elementName: "Special Ability")]
         public string SpecialAbility { get; set; }
@@ -45,7 +45,7 @@ namespace W2CharacterEditor
 
         [JsonConstructor]
         public SpaceshipObject(
-            ObjectId i, string n, ShipSpecialty p, string s, int a, int d, decimal h)
+            ObjectId i, string n, string p, string s, int a, int d, decimal h)
         {
             id = i;
             Name = n;
@@ -59,6 +59,7 @@ namespace W2CharacterEditor
         public SpaceshipObject(ObjectId _id) {
             id = _id;
             Name = "";
+            Class = "";
             SpecialAbility = "";
             Strength = 0;
             WarpRange = 0;

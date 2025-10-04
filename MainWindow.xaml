@@ -5,44 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:W2CharacterEditor"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="450" Width="800"
-        SizeToContent="Height">
+        Title="MainWindow" MinHeight="500" Width="800"
+        SizeToContent="Height"
+        SizeChanged="Window_SizeChanged">
     <DockPanel>
-        <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
-            <MenuItem Header="Database" VerticalAlignment="Center">
-                <MenuItem Header="Download All From MongoDB" Name="MenuDownLoad" Click="MenuDownLoad_Click" />
-            </MenuItem>
-        </Menu>
-        <TabControl>
+        <TabControl Name="TabControl" SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="Space ships">
                 <StackPanel Background="#FFE5E5E5">
-                    <DockPanel Margin="0,0,0,0">
-                        <TextBlock x:Name="Spaceship" Text="Space ships: " FontWeight ="Bold" FontSize="20" Foreground="#73CAC3" />
-                        <Button Margin="10,5,0,0" x:Name="btnSpaceshipLoad" Width="100" Content="Reload from DB" Click="btnSpaceshipLoad_Click" />
-                        <Button Margin="20,5,0,0" x:Name="btnSpaceshipUpdate" Width="100" Content="Update All" Click="btnSpaceshipUpdate_Click" />
-                        <Button Margin="20,5,0,0" x:Name="btnSpaceshipAdd" Width="100" Content="Add New" Click="btnSpaceshipAdd_Click" />
-                        <Label Name="SpaceshipErrLabel" MinWidth="100" HorizontalAlignment="Right" Foreground="Red"/>
+                    <DockPanel>
+                        <TextBlock Text="Space ships:" FontWeight ="Bold" FontSize="20" Foreground="#73CAC3" />
+                        <Button Margin="10,5,0,0" Width="100" Content="Reload from DB" Click="btnSpaceshipLoad_Click" />
+                        <Button Margin="20,5,0,0" Width="100" Content="Update All" Click="btnSpaceshipUpdate_Click" />
+                        <Button Margin="20,5,0,0" Width="100" Content="Add New" Click="btnSpaceshipAdd_Click" />
+                        <Label Name="SpaceshipErrLabel" MinWidth="100" HorizontalAlignment="Right" />
                     </DockPanel>
                     <WrapPanel Name="wpSpaceShip" Margin="0,10,0,20" Orientation="Horizontal" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Officers">
-
+                <StackPanel Background="#FFE5E5E5">
+                    <DockPanel>
+                        <TextBlock Text="Officers:" FontWeight ="Bold" FontSize="20" Foreground="#0BB641" />
+                        <Button Margin="10,5,0,0" Width="100" Content="Reload from DB" Click="btnOfficerLoad_Click" />
+                        <Button Margin="20,5,0,0" Width="100" Content="Update All" Click="btnOfficerUpdate_Click" />
+                        <Button Margin="20,5,0,0" Width="100" Content="Add New" Click="btnOfficerAdd_Click" />
+                        <Label Name="OfficerErrLabel" MinWidth="100" HorizontalAlignment="Right" />
+                    </DockPanel>
+                    <WrapPanel Name="wpOfficer" Margin="0,10,0,20" Orientation="Horizontal" />
+                </StackPanel>
             </TabItem>
             <TabItem Header="Planetary Systems">
                 <StackPanel Background="#FFE5E5E5">
-                    <DockPanel Margin="0,0,0,0">
-                        <TextBlock x:Name="Planets" Text="Planetary Systems: " FontWeight ="Bold" FontSize="20" Foreground="#C4C6E7" />
-                        <Button Margin="10,5,0,0" x:Name="btnPlanetLoad" Width="100" Content="Reload from DB" Click="btnPlanetLoad_Click" />
-                        <Button Margin="20,5,0,0" x:Name="btnPlanetUpdate" Width="100" Content="Update All" Click="btnPlanetUpdate_Click" />
-                        <Button Margin="20,5,0,0" x:Name="btnPlanetAdd" Width="100" Content="Add New" Click="btnPlanetAdd_Click" />
-                        <Label Name="PlanetErrLabel" MinWidth="100" HorizontalAlignment="Right" Foreground="Red"/>
+                    <DockPanel>
+                        <TextBlock Text="Planetary Systems:" FontWeight ="Bold" FontSize="20" Foreground="#A8A9C9" />
+                        <Button Margin="10,5,0,0" Width="100" Content="Reload from DB" Click="btnPlanetLoad_Click" />
+                        <Button Margin="20,5,0,0" Width="100" Content="Update All" Click="btnPlanetUpdate_Click" />
+                        <Button Margin="20,5,0,0" Width="100" Content="Add New" Click="btnPlanetAdd_Click" />
+                        <Label Name="PlanetErrLabel" MinWidth="100" HorizontalAlignment="Right" />
                     </DockPanel>
                     <WrapPanel Name="wpPlanet" Margin="0,10,0,20" Orientation="Horizontal" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Missions">
-
+                <StackPanel Background="#FFE5E5E5">
+                    <DockPanel>
+                        <TextBlock Text="Missions:" FontWeight ="Bold" FontSize="20" Foreground="#FF92C2" />
+                        <Button Margin="10,5,0,0" Width="100" Content="Reload from DB" Click="btnMissionLoad_Click" />
+                        <Button Margin="20,5,0,0" Width="100" Content="Update All" Click="btnMissionUpdate_Click" />
+                        <Button Margin="20,5,0,0" Width="100" Content="Add New" Click="btnMissionAdd_Click" />
+                        <Label Name="MissionErrLabel" MinWidth="100" HorizontalAlignment="Right" />
+                    </DockPanel>
+                    <WrapPanel Name="wpMission" Margin="0,10,0,20" Orientation="Horizontal" />
+                </StackPanel>
             </TabItem>
         </TabControl>
     </DockPanel>
